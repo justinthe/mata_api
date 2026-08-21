@@ -7,8 +7,14 @@ from sqlalchemy.engine import Engine
 
 load_dotenv()
 
+_engine: Engine | None = None
+
 
 def get_connection() -> Engine:
+    global _engine
+    if _engine is not None:
+        return _engine
+
     database_url = os.environ.get("DATABASE_URL")
     if not database_url:
         raise RuntimeError("DATABASE_URL is not set")
@@ -16,7 +22,14 @@ def get_connection() -> Engine:
     # (e.g. Render) still hand out.
     if database_url.startswith("postgres://"):
         database_url = "postgresql://" + database_url[len("postgres://"):]
-    return create_engine(database_url)
+    # Every prior call created a brand-new Engine (its own connection pool)
+    # that was never disposed -- against a session-mode pooler with a fixed
+    # client cap (e.g. Supabase's 15), that exhausted it within minutes.
+    # Cache one Engine per process instead; keep the pool small since a
+    # session-mode pooler holds each connection open for the session, not
+    # just per-transaction.
+    _engine = create_engine(database_url, pool_size=3, max_overflow=2)
+    return _engine
 
 
 def write_rows(table: str, rows: list[dict]) -> None:
