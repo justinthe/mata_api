@@ -21,4 +21,9 @@ COPY data ./data
 COPY backend/entrypoint.sh .
 RUN chmod +x entrypoint.sh
 
+# Render's disk is ephemeral -- on a redeploy where ingest is skipped
+# (ingest_log already populated in the persistent DB), nothing else would
+# create this dir, and StaticFiles(directory="generated") raises at import.
+RUN mkdir -p generated/overlays
+
 CMD ["./entrypoint.sh"]
