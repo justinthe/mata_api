@@ -1,0 +1,626 @@
+<title>MATA Hazard Command — Mockup</title>
+<style>
+  :root{
+    --bg:#06090a; --panel:#0e1514; --panel-alt:#121a19; --raise:#17211f;
+    --border:#233230; --border-bright:#3a5449; --text:#cfe9d8; --text-dim:#6f8c7d;
+    --accent:#49e07d; --accent-dim:#245c3c; --amber:#ffb020; --red:#ff3b30;
+    --yellow:#f5c542; --green:#3ddc61; --grey:#4a5652; --mono:'Consolas','Courier New',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--mono);height:100%;}
+  body{font-size:13px;letter-spacing:.02em;}
+  ::selection{background:var(--accent-dim);color:#fff;}
+  button,select,input{font-family:var(--mono);}
+  a{color:inherit;}
+  .hidden{display:none !important;}
+  .angular{clip-path:polygon(0 10px,10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%);}
+  .angular-sm{clip-path:polygon(0 6px,6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%);}
+
+  /* ---------- header ---------- */
+  header{
+    height:52px; display:flex; align-items:center; justify-content:space-between;
+    padding:0 16px; background:var(--panel); border-bottom:1px solid var(--border-bright);
+    position:sticky; top:0; z-index:50;
+  }
+  .brand{display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.12em;}
+  .brand .dot{width:9px;height:9px;background:var(--accent);border-radius:1px;box-shadow:0 0 8px var(--accent);animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .brand small{color:var(--text-dim);font-weight:400;letter-spacing:.08em;}
+  nav.tabs{display:flex;gap:2px;}
+  nav.tabs a{
+    padding:7px 14px;font-size:11px;letter-spacing:.1em;color:var(--text-dim);text-decoration:none;
+    border:1px solid transparent;text-transform:uppercase;cursor:pointer;
+  }
+  nav.tabs a.active{color:var(--accent);border-color:var(--border-bright);background:var(--panel-alt);}
+  nav.tabs a:hover{color:var(--text);}
+  .status-block{display:flex;align-items:center;gap:16px;font-size:11px;color:var(--text-dim);}
+  .link-pill{display:flex;align-items:center;gap:6px;cursor:pointer;padding:4px 8px;border:1px solid var(--border);}
+  .link-pill .led{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);}
+  .link-pill.offline .led{background:var(--red);box-shadow:0 0 6px var(--red);animation:none;}
+  #clock{color:var(--text);}
+
+  /* ---------- screens ---------- */
+  .screen{display:none;}
+  .screen.active{display:block;}
+
+  /* ===== DASHBOARD ===== */
+  #dashboard .layout{
+    display:grid; grid-template-columns:250px 1fr 270px; min-height:calc(100vh - 52px);
+  }
+  aside{background:var(--panel);border-right:1px solid var(--border);padding:14px;overflow-y:auto;}
+  aside.right{border-right:none;border-left:1px solid var(--border);}
+  .section-label{font-size:10px;letter-spacing:.15em;color:var(--text-dim);margin:16px 0 8px;text-transform:uppercase;}
+  .section-label:first-child{margin-top:0;}
+
+  select#weekSelect{
+    width:100%;background:var(--panel-alt);color:var(--text);border:1px solid var(--border-bright);
+    padding:8px;font-size:12px;letter-spacing:.05em;
+  }
+  .seg{display:flex;border:1px solid var(--border-bright);}
+  .seg button{
+    flex:1;background:var(--panel-alt);color:var(--text-dim);border:none;padding:8px 4px;font-size:11px;
+    letter-spacing:.06em;cursor:pointer;border-right:1px solid var(--border);text-transform:uppercase;
+  }
+  .seg button:last-child{border-right:none;}
+  .seg button.active{background:var(--accent-dim);color:#eafff1;}
+
+  .layer-row{border:1px solid var(--border);background:var(--panel-alt);padding:8px;margin-bottom:8px;}
+  .layer-row.disabled{opacity:.45;}
+  .layer-head{display:flex;align-items:center;justify-content:space-between;font-size:11px;}
+  .layer-head label{display:flex;align-items:center;gap:6px;cursor:pointer;}
+  .swatch{width:10px;height:10px;display:inline-block;border:1px solid rgba(255,255,255,.25);}
+  input[type=range]{width:100%;accent-color:var(--accent);margin-top:6px;}
+  input[type=checkbox]{accent-color:var(--accent);}
+
+  .legend{border:1px solid var(--border);background:var(--panel-alt);padding:8px;font-size:10px;color:var(--text-dim);}
+  .legend div{display:flex;align-items:center;gap:6px;margin:3px 0;}
+
+  /* map */
+  .map-wrap{position:relative;overflow:hidden;background:#050807;}
+  .map-terrain{
+    position:absolute;inset:6%;
+    clip-path:polygon(15% 5%,40% 2%,65% 8%,85% 20%,95% 40%,90% 65%,75% 85%,55% 95%,30% 92%,10% 75%,5% 50%,8% 25%);
+    background:
+      repeating-linear-gradient(45deg,rgba(255,255,255,.02) 0 2px,transparent 2px 6px),
+      radial-gradient(ellipse at 30% 20%,#31463a,#111c17 45%,#0a1210 75%),
+      linear-gradient(160deg,#1c2b22,#0a120f);
+  }
+  .kec-lines{position:absolute;inset:0;pointer-events:none;}
+  .kec-lines path{fill:none;stroke:rgba(255,255,255,.16);stroke-width:1;stroke-dasharray:3 2;}
+  .grid-cells{
+    position:absolute;inset:0;display:grid;grid-template-columns:repeat(14,1fr);grid-template-rows:repeat(9,1fr);
+  }
+  .cell{position:relative;cursor:crosshair;border:1px solid rgba(0,0,0,.15);}
+  .cell::after{content:"";position:absolute;inset:1px;opacity:.55;}
+  .cell.low::after{background:var(--green);}
+  .cell.med::after{background:var(--yellow);}
+  .cell.high::after{background:var(--red);}
+  .cell:hover::after{opacity:.85;}
+  .cell.flash::after{animation:flash 1.4s ease-out 3;}
+  @keyframes flash{0%,100%{opacity:.55}50%{opacity:1;box-shadow:0 0 10px #fff}}
+
+  .map-hud{position:absolute;bottom:10px;left:10px;font-size:10px;color:var(--text-dim);background:rgba(6,9,10,.7);padding:5px 8px;border:1px solid var(--border);}
+  .map-legend{position:absolute;bottom:10px;right:10px;}
+  .map-title{position:absolute;top:10px;left:10px;font-size:11px;letter-spacing:.12em;color:var(--text-dim);}
+  .map-title b{color:var(--text);}
+  .compass{position:absolute;top:10px;right:10px;width:34px;height:34px;border:1px solid var(--border-bright);
+    display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--accent);background:rgba(6,9,10,.7);}
+
+  .popup-card{
+    position:absolute;width:210px;background:var(--panel);border:1px solid var(--accent);z-index:30;
+    padding:10px;font-size:11px;box-shadow:0 6px 24px rgba(0,0,0,.6);
+  }
+  .popup-card .pc-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;border-bottom:1px solid var(--border);padding-bottom:6px;}
+  .popup-card .pc-head b{color:var(--accent);letter-spacing:.08em;}
+  .popup-card .pc-close{cursor:pointer;color:var(--text-dim);}
+  .popup-card .pc-row{display:flex;justify-content:space-between;margin:3px 0;color:var(--text-dim);}
+  .popup-card .pc-row span:last-child{color:var(--text);}
+  .tier-pill{padding:1px 6px;font-size:9px;letter-spacing:.06em;}
+  .tier-pill.low{background:var(--green);color:#04170a;}
+  .tier-pill.med{background:var(--yellow);color:#241c00;}
+  .tier-pill.high{background:var(--red);color:#2b0300;}
+
+  /* alert panel */
+  .alert-card{
+    border:1px solid var(--border-bright);background:var(--panel-alt);padding:10px;margin-bottom:8px;cursor:pointer;
+  }
+  .alert-card:hover{border-color:var(--accent);}
+  .alert-card .n{font-size:26px;font-weight:700;line-height:1;}
+  .alert-card.fire .n{color:var(--red);}
+  .alert-card.landslide .n{color:var(--amber);}
+  .alert-card.combined .n{color:#fff;text-shadow:0 0 8px var(--red);}
+  .alert-card .lbl{font-size:10px;color:var(--text-dim);letter-spacing:.1em;margin-top:2px;}
+
+  .btn{
+    width:100%;background:var(--accent-dim);color:#eafff1;border:1px solid var(--accent);padding:10px;
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;
+  }
+  .btn:hover{background:#2f7a4d;}
+  .btn.ghost{background:transparent;color:var(--text-dim);border-color:var(--border-bright);}
+  .btn.ghost:hover{color:var(--text);}
+
+  /* ===== modal ===== */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;z-index:100;}
+  .modal{width:340px;background:var(--panel);border:1px solid var(--accent);padding:18px;}
+  .modal h3{margin:0 0 12px;font-size:13px;letter-spacing:.1em;color:var(--accent);}
+  .modal .row{margin-bottom:12px;}
+  .modal label{display:block;font-size:10px;color:var(--text-dim);letter-spacing:.08em;margin-bottom:5px;text-transform:uppercase;}
+  .modal-actions{display:flex;gap:8px;margin-top:16px;}
+  .spinner-line{font-size:11px;color:var(--amber);letter-spacing:.05em;}
+  .spinner-line::before{content:"⣾";display:inline-block;margin-right:6px;animation:spin 1s steps(8) infinite;}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* toast */
+  #toast{position:fixed;bottom:18px;right:18px;background:var(--panel);border:1px solid var(--accent);
+    padding:10px 16px;font-size:11px;color:var(--text);z-index:200;transform:translateY(20px);opacity:0;
+    transition:all .25s;}
+  #toast.show{transform:translateY(0);opacity:1;}
+
+  /* ===== ingest-status screen ===== */
+  #ingest-status .wrap{padding:24px;max-width:900px;margin:0 auto;}
+  #ingest-status h2{font-size:14px;letter-spacing:.1em;color:var(--accent);}
+  table{width:100%;border-collapse:collapse;font-size:11px;margin-top:14px;}
+  th,td{border:1px solid var(--border);padding:7px 10px;text-align:left;}
+  th{background:var(--panel-alt);color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em;font-size:10px;}
+  td.status-ok{color:var(--green);}
+  td.status-mock{color:var(--amber);}
+  td.status-missing{color:var(--text-dim);}
+  td.status-error{color:var(--red);}
+  .chip{padding:2px 7px;font-size:9px;letter-spacing:.06em;border:1px solid currentColor;}
+
+  /* ===== empty-week ===== */
+  #empty-week .empty-body{
+    height:calc(100vh - 52px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+  }
+  #empty-week .empty-body .glyph{font-size:40px;color:var(--border-bright);}
+  #empty-week .empty-body h2{font-size:14px;letter-spacing:.12em;color:var(--text-dim);}
+  #empty-week .empty-body p{font-size:11px;color:var(--text-dim);max-width:360px;text-align:center;}
+
+  /* ===== error-state ===== */
+  #error-state .error-body{
+    height:calc(100vh - 52px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+    background:repeating-linear-gradient(45deg,rgba(255,59,48,.03) 0 2px,transparent 2px 12px);
+  }
+  #error-state .glyph{font-size:44px;color:var(--red);}
+  #error-state h2{font-size:15px;letter-spacing:.1em;color:var(--red);}
+  #error-state .trace{font-size:10px;color:var(--text-dim);background:var(--panel-alt);border:1px solid var(--border);padding:8px 12px;}
+  #error-state .btn{width:auto;padding:9px 22px;}
+
+  /* responsive */
+  @media (max-width:900px){
+    #dashboard .layout{grid-template-columns:1fr;}
+    aside{border:none;border-bottom:1px solid var(--border);max-height:220px;}
+    aside.right{border-bottom:none;border-top:1px solid var(--border);}
+    .map-wrap{height:60vh;}
+    nav.tabs a{padding:6px 8px;font-size:10px;}
+    .status-block{display:none;}
+  }
+</style>
+
+<header>
+  <div class="brand"><span class="dot"></span>MATA HAZARD COMMAND <small>// MAJALENGKA SECTOR</small></div>
+  <nav class="tabs">
+    <a data-nav="dashboard" class="active">Command Map</a>
+    <a data-nav="ingest-status">Ingest Log</a>
+  </nav>
+  <div class="status-block">
+    <span id="clock">--:--:--Z</span>
+    <span class="link-pill" id="linkPill" title="click to simulate link status"><span class="led"></span><span id="linkLabel">LINK OK</span></span>
+  </div>
+</header>
+
+<!-- ============ DASHBOARD ============ -->
+<section class="screen active" data-screen="dashboard" id="dashboard">
+  <div class="layout">
+    <aside>
+      <div class="section-label">Week</div>
+      <select id="weekSelect">
+        <option value="2026-W34">2026-W34 (latest)</option>
+        <option value="2026-W31">2026-W31</option>
+        <option value="2026-W30">2026-W30</option>
+        <option value="2026-W99">2026-W99 — NO DATA</option>
+      </select>
+
+      <div class="section-label">Hazard Filter</div>
+      <div class="seg" id="hazardSeg">
+        <button data-hz="fire" class="active">Fire</button>
+        <button data-hz="landslide">Landslide</button>
+      </div>
+
+      <div class="section-label">Layers</div>
+      <div id="layerList"></div>
+    </aside>
+
+    <div class="map-wrap">
+      <div class="map-title">SECTOR <b>MAJALENGKA</b> &nbsp;·&nbsp; WEEK <b id="mapWeekLbl">2026-W34</b></div>
+      <div class="compass">N<br>▲</div>
+      <div class="map-terrain" id="mapTerrain">
+        <svg class="kec-lines" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path d="M20,20 L45,15 L60,30 L50,55 L25,50 Z"/>
+          <path d="M45,15 L75,25 L80,50 L60,30 Z"/>
+          <path d="M25,50 L50,55 L55,80 L30,85 Z"/>
+          <path d="M50,55 L60,30 L80,50 L70,75 L55,80 Z"/>
+        </svg>
+        <div class="grid-cells" id="gridCells"></div>
+      </div>
+      <div class="map-hud" id="mapHud">LAT -6.8000 &nbsp; LON 108.2000</div>
+      <div class="map-legend legend">
+        <div><span class="swatch" style="background:var(--red)"></span>HIGH / EXPECTED+</div>
+        <div><span class="swatch" style="background:var(--yellow)"></span>MEDIUM / MODEST</div>
+        <div><span class="swatch" style="background:var(--green)"></span>LOW / UNLIKELY</div>
+      </div>
+    </div>
+
+    <aside class="right">
+      <div class="section-label">Alert Summary — <span id="alertWeekLbl">2026-W34</span></div>
+      <div class="alert-card fire" id="alertFire">
+        <div class="n">0</div><div class="lbl">FIRE · HIGH RISK CELLS</div>
+      </div>
+      <div class="alert-card landslide" id="alertLandslide">
+        <div class="n">0</div><div class="lbl">LANDSLIDE · EXPECTED / ACTIVE</div>
+      </div>
+      <div class="alert-card combined" id="alertCombined">
+        <div class="n">0</div><div class="lbl">COMBINED · BOTH HIGH</div>
+      </div>
+      <div class="section-label">Report</div>
+      <button class="btn" id="exportBtn">Export PDF Summary</button>
+      <div class="section-label">System</div>
+      <button class="btn ghost" id="simErrBtn">Simulate Connection Loss</button>
+    </aside>
+  </div>
+</section>
+
+<!-- ============ INGEST STATUS ============ -->
+<section class="screen" data-screen="ingest-status" id="ingest-status">
+  <div class="wrap">
+    <h2>&gt; INGEST LOG — OPERATOR VIEW</h2>
+    <div class="section-label" style="margin-top:16px">Week</div>
+    <select id="ingestWeekSelect" style="background:var(--panel-alt);color:var(--text);border:1px solid var(--border-bright);padding:7px 10px;">
+      <option value="2026-W34">2026-W34</option>
+      <option value="2026-W31">2026-W31</option>
+      <option value="2026-W30">2026-W30</option>
+      <option value="2026-W99">2026-W99</option>
+    </select>
+    <table>
+      <thead><tr><th>File Type</th><th>Status</th><th>Detail</th></tr></thead>
+      <tbody id="ingestTableBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ EMPTY WEEK ============ -->
+<section class="screen" data-screen="empty-week" id="empty-week">
+  <div class="empty-body">
+    <div class="glyph">▢</div>
+    <h2>NO DATA INGESTED — 2026-W99</h2>
+    <p>No fire or landslide files were found under <code>data/2026_w99/</code>. Run the ingest script for this week, or select a different week from Command Map.</p>
+    <button class="btn ghost" style="width:auto;padding:9px 22px" data-nav="dashboard">← Back to Command Map</button>
+  </div>
+</section>
+
+<!-- ============ ERROR STATE ============ -->
+<section class="screen" data-screen="error-state" id="error-state">
+  <div class="error-body">
+    <div class="glyph">⨯</div>
+    <h2>CONNECTION LOST — UNABLE TO REACH MATA API</h2>
+    <div class="trace">GET /api/fire/summary?week=2026-W34 → timeout after 3 retries (connect: refused)</div>
+    <button class="btn" id="retryBtn">Retry Connection</button>
+  </div>
+</section>
+
+<div id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- deterministic mock RNG ---------- */
+  function seedFromStr(s){var h=0;for(var i=0;i<s.length;i++){h=(h<<5)-h+s.charCodeAt(i);h|=0;}return h>>>0;}
+  function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+
+  var WEEK_HAS_DATA={"2026-W34":true,"2026-W31":true,"2026-W30":true,"2026-W99":false};
+  var COLS=14, ROWS=9, TOTAL=COLS*ROWS;
+  var KEC_NAMES=["Argapura","Bantarujeg","Cikijing","Cingambul","Dawuan","Jati Tujuh","Jatiwangi","Kadipaten","Kertajati","Lemah Sugih","Majalengka"];
+
+  function genCells(week){
+    var cells=[];
+    var rnd=mulberry32(seedFromStr(week));
+    for(var i=0;i<TOTAL;i++){
+      var fr=rnd(), lr=rnd();
+      var fireTier = fr>0.93?"high": fr>0.72?"med":"low";
+      var lsTier = lr>0.90?"high": lr>0.68?"med":"low";
+      cells.push({
+        id:i,
+        gridId:"GRID-"+String(i+1).padStart(5,"0"),
+        lsGridId:"LS-"+String(i+1).padStart(5,"0"),
+        kec:KEC_NAMES[i%KEC_NAMES.length],
+        fireTier:fireTier,
+        fireScore:(fr*100).toFixed(1),
+        frp:(fr*38).toFixed(1),
+        hotspot:Math.round(fr*6),
+        lsTier:lsTier,
+        lsScore:Math.round(lr*255),
+        lsCategory: lsTier==="high"?(lr>0.96?"Active Landslides":"Landslides Expected") : lsTier==="med"?"Modest Hazard":"Landslide Unlikely",
+        slope:(12+lr*30).toFixed(1),
+        rainfall:(4+lr*40).toFixed(1)
+      });
+    }
+    return cells;
+  }
+
+  var state={
+    week:"2026-W34",
+    hazard:"fire",
+    layers:{
+      fireGrid:{visible:true,opacity:80,label:"Fire Risk — Grid",color:"var(--red)",status:"ok"},
+      fireKec:{visible:true,opacity:60,label:"Fire Risk — Kecamatan",color:"var(--amber)",status:"mock"},
+      burned:{visible:false,opacity:70,label:"Burned Area (SAR)",color:"var(--red)",status:"ok"},
+      landslideRisk:{visible:true,opacity:75,label:"Landslide Risk",color:"var(--yellow)",status:"ok"}
+    },
+    cells:genCells("2026-W34")
+  };
+
+  var INGEST_FILES=[
+    ["fire_risk_*.json","Fire — risk summary"],
+    ["fire_risk_*_grid.tif","Fire — grid raster"],
+    ["fire_risk_*_kecamatan.tif","Fire — kecamatan raster"],
+    ["fire_sar_burned_area_*.json","Fire — burned area (summary)"],
+    ["fire_sar_burned_area_*.tif","Fire — burned area raster"],
+    ["fire_sar_result_*.csv","Fire — SAR pixel result"],
+    ["fire_scores_*.csv","Fire — grid score/prediction"],
+    ["fire_weekly_features_*.csv","Fire — weekly features"],
+    ["landslide_risk_*.json","Landslide — risk summary"],
+    ["landslide_risk_*.tif","Landslide — risk raster"],
+    ["landslide_scores_*.csv","Landslide — grid scores"],
+    ["landslide_reclassified_*.csv","Landslide — reclassified"],
+    ["landslide_static_features_*.csv","Landslide — static features"],
+    ["landslide_dynamic_features_*.csv","Landslide — dynamic features"]
+  ];
+  var INGEST_STATUS={
+    "2026-W34":["ok","ok","mock","ok","ok","ok","ok","ok","ok","mock","missing","missing","missing","missing"],
+    "2026-W31":["ok","ok","ok","ok","ok","ok","ok","ok","ok","ok","ok","ok","ok","ok"],
+    "2026-W30":["ok","missing","ok","ok","ok","missing","missing","missing","ok","ok","ok","ok","ok","ok"],
+    "2026-W99":["missing","missing","missing","missing","missing","missing","missing","missing","missing","missing","missing","missing","missing","missing"]
+  };
+
+  /* ---------- router ---------- */
+  function go(name){
+    document.querySelectorAll(".screen").forEach(function(s){s.classList.toggle("active", s.dataset.screen===name);});
+    document.querySelectorAll("nav.tabs a").forEach(function(a){a.classList.toggle("active", a.dataset.nav===name);});
+    if(name==="ingest-status") renderIngest();
+  }
+  document.querySelectorAll("[data-nav]").forEach(function(el){
+    el.addEventListener("click", function(){ go(el.dataset.nav); });
+  });
+
+  /* ---------- clock ---------- */
+  function tickClock(){
+    var d=new Date();
+    document.getElementById("clock").textContent=d.toISOString().substr(11,8)+"Z";
+  }
+  tickClock(); setInterval(tickClock,1000);
+
+  /* ---------- link pill / error sim ---------- */
+  var linkPill=document.getElementById("linkPill");
+  linkPill.addEventListener("click", function(){ go("error-state"); });
+  document.getElementById("simErrBtn").addEventListener("click", function(){ go("error-state"); });
+  document.getElementById("retryBtn").addEventListener("click", function(){
+    showToast("Connection restored.");
+    go("dashboard");
+  });
+
+  /* ---------- toast ---------- */
+  var toastTimer=null;
+  function showToast(msg){
+    var t=document.getElementById("toast");
+    t.textContent=msg; t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer=setTimeout(function(){t.classList.remove("show");},3000);
+  }
+
+  /* ---------- layer panel ---------- */
+  function renderLayerList(){
+    var wrap=document.getElementById("layerList");
+    wrap.innerHTML="";
+    Object.keys(state.layers).forEach(function(key){
+      var L=state.layers[key];
+      var relevant = (state.hazard==="fire" && key!=="landslideRisk") ||
+        (state.hazard==="landslide" && key==="landslideRisk");
+      if(!relevant) return;
+      var row=document.createElement("div");
+      row.className="layer-row"+(L.status==="missing"?" disabled":"");
+      row.innerHTML=
+        '<div class="layer-head">'+
+          '<label><input type="checkbox" '+(L.visible?"checked":"")+' data-layer="'+key+'" '+(L.status==="missing"?"disabled":"")+'>'+
+          '<span class="swatch" style="background:'+L.color+'"></span>'+L.label+'</label>'+
+        '</div>'+
+        (L.status!=="missing" ? '<input type="range" min="0" max="100" value="'+L.opacity+'" data-opacity="'+key+'">' : '<div style="font-size:9px;color:var(--text-dim);margin-top:6px">no raster ingested for this week</div>');
+      wrap.appendChild(row);
+    });
+    wrap.querySelectorAll("[data-layer]").forEach(function(cb){
+      cb.addEventListener("change", function(){ state.layers[cb.dataset.layer].visible=cb.checked; renderMap(); });
+    });
+    wrap.querySelectorAll("[data-opacity]").forEach(function(sl){
+      sl.addEventListener("input", function(){
+        state.layers[sl.dataset.opacity].opacity=+sl.value;
+        renderMap();
+      });
+    });
+  }
+
+  /* ---------- hazard segment ---------- */
+  document.querySelectorAll("#hazardSeg button").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      document.querySelectorAll("#hazardSeg button").forEach(function(b){b.classList.remove("active");});
+      btn.classList.add("active");
+      state.hazard=btn.dataset.hz;
+      renderLayerList(); renderMap();
+    });
+  });
+
+  /* ---------- week select ---------- */
+  document.getElementById("weekSelect").addEventListener("change", function(e){
+    var wk=e.target.value;
+    state.week=wk;
+    document.getElementById("ingestWeekSelect").value=wk;
+    if(!WEEK_HAS_DATA[wk]){ go("empty-week"); return; }
+    state.cells=genCells(wk);
+    state.layers.fireKec.status = wk==="2026-W34" ? "mock" : "ok";
+    state.layers.landslideRisk.status = wk==="2026-W34" ? "mock" : "ok";
+    document.getElementById("mapWeekLbl").textContent=wk;
+    document.getElementById("alertWeekLbl").textContent=wk;
+    renderLayerList(); renderMap();
+    showToast("Loaded week "+wk+".");
+  });
+
+  /* ---------- map / grid cells ---------- */
+  var popupEl=null;
+  function closePopup(){ if(popupEl){popupEl.remove(); popupEl=null;} }
+
+  function renderMap(){
+    var grid=document.getElementById("gridCells");
+    grid.innerHTML="";
+    var fireVisible = state.layers.fireGrid.visible && state.layers.fireGrid.status!=="missing";
+    var lsVisible = state.layers.landslideRisk.visible && state.layers.landslideRisk.status!=="missing";
+
+    state.cells.forEach(function(c){
+      var div=document.createElement("div");
+      var showFire = state.hazard==="fire" && fireVisible;
+      var showLs = state.hazard==="landslide" && lsVisible;
+      var tier = state.hazard==="fire" ? c.fireTier : c.lsTier;
+      var cls="cell "+((showFire||showLs) ? tier : "");
+      div.className=cls;
+      div.style.opacity = (state.hazard==="fire"?state.layers.fireGrid.opacity:state.layers.landslideRisk.opacity)/100 + 0.1;
+      div.addEventListener("click", function(ev){ openPopup(c, ev); });
+      grid.appendChild(div);
+    });
+
+    var alerts=computeAlerts();
+    document.getElementById("alertFire").querySelector(".n").textContent=alerts.fire;
+    document.getElementById("alertLandslide").querySelector(".n").textContent=alerts.landslide;
+    document.getElementById("alertCombined").querySelector(".n").textContent=alerts.combined;
+  }
+
+  function computeAlerts(){
+    var fire=0, landslide=0, combined=0;
+    state.cells.forEach(function(c){
+      if(c.fireTier==="high") fire++;
+      if(c.lsTier==="high") landslide++;
+      if(c.fireTier==="high" && c.lsTier==="high") combined++;
+    });
+    return {fire:fire,landslide:landslide,combined:combined};
+  }
+
+  function openPopup(c, ev){
+    closePopup();
+    var mapWrap=document.querySelector(".map-wrap");
+    var rect=mapWrap.getBoundingClientRect();
+    var card=document.createElement("div");
+    card.className="popup-card";
+    var left=Math.min(ev.clientX-rect.left+10, rect.width-220);
+    var top=Math.min(ev.clientY-rect.top+10, rect.height-160);
+    card.style.left=left+"px"; card.style.top=top+"px";
+
+    var body="";
+    if(state.hazard==="fire"){
+      body+='<div class="pc-row"><span>Grid ID</span><span>'+c.gridId+'</span></div>'+
+            '<div class="pc-row"><span>Kecamatan</span><span>'+c.kec+'</span></div>'+
+            '<div class="pc-row"><span>Fire Tier</span><span class="tier-pill '+c.fireTier+'">'+c.fireTier.toUpperCase()+'</span></div>'+
+            '<div class="pc-row"><span>Predicted Count</span><span>'+c.fireScore+'</span></div>'+
+            '<div class="pc-row"><span>Hotspot Count</span><span>'+c.hotspot+'</span></div>'+
+            '<div class="pc-row"><span>Max FRP</span><span>'+c.frp+' MW</span></div>';
+    } else {
+      body+='<div class="pc-row"><span>LS Grid ID</span><span>'+c.lsGridId+'</span></div>'+
+            '<div class="pc-row"><span>Category</span><span class="tier-pill '+c.lsTier+'">'+c.lsCategory+'</span></div>'+
+            '<div class="pc-row"><span>Score (0-255)</span><span>'+c.lsScore+'</span></div>'+
+            '<div class="pc-row"><span>Slope</span><span>'+c.slope+'°</span></div>'+
+            '<div class="pc-row"><span>7d Rainfall</span><span>'+c.rainfall+' mm</span></div>';
+    }
+
+    card.innerHTML='<div class="pc-head"><b>CELL DETAIL</b><span class="pc-close">✕</span></div>'+body;
+    card.querySelector(".pc-close").addEventListener("click", closePopup);
+    mapWrap.appendChild(card);
+    popupEl=card;
+  }
+
+  document.querySelector(".map-wrap").addEventListener("mousemove", function(ev){
+    var rect=this.getBoundingClientRect();
+    var fx=(ev.clientX-rect.left)/rect.width, fy=(ev.clientY-rect.top)/rect.height;
+    var lat=(-6.70 - fy*0.30).toFixed(4);
+    var lon=(108.05 + fx*0.30).toFixed(4);
+    document.getElementById("mapHud").textContent="LAT "+lat+"   LON "+lon;
+  });
+
+  /* alert card click -> flash matching cells */
+  function flashAlerts(kind){
+    var cells=document.querySelectorAll("#gridCells .cell");
+    var matched=0;
+    state.cells.forEach(function(c,i){
+      var ok = kind==="fire" ? c.fireTier==="high" : kind==="landslide" ? c.lsTier==="high" : (c.fireTier==="high"&&c.lsTier==="high");
+      if(ok){ cells[i].classList.add("flash"); matched++; }
+    });
+    showToast("Zoomed to "+matched+" "+kind+" alert area(s).");
+    setTimeout(function(){ cells.forEach(function(c){c.classList.remove("flash");}); }, 4300);
+  }
+  document.getElementById("alertFire").addEventListener("click", function(){ flashAlerts("fire"); });
+  document.getElementById("alertLandslide").addEventListener("click", function(){ flashAlerts("landslide"); });
+  document.getElementById("alertCombined").addEventListener("click", function(){ flashAlerts("combined"); });
+
+  /* ---------- export modal ---------- */
+  document.getElementById("exportBtn").addEventListener("click", function(){
+    var overlay=document.createElement("div");
+    overlay.className="modal-overlay";
+    overlay.innerHTML=
+      '<div class="modal">'+
+        '<h3>&gt; EXPORT PDF SUMMARY</h3>'+
+        '<div class="row"><label>Week</label><div>'+state.week+'</div></div>'+
+        '<div class="row"><label>Hazard Filter</label><div>'+state.hazard.toUpperCase()+'</div></div>'+
+        '<div id="exportBody" class="row"><label>Status</label><div id="exportStatus">Ready to generate.</div></div>'+
+        '<div class="modal-actions">'+
+          '<button class="btn ghost" id="modalCancel">Cancel</button>'+
+          '<button class="btn" id="modalGenerate">Generate Report</button>'+
+        '</div>'+
+      '</div>';
+    document.body.appendChild(overlay);
+    overlay.addEventListener("click", function(e){ if(e.target===overlay) overlay.remove(); });
+    overlay.querySelector("#modalCancel").addEventListener("click", function(){ overlay.remove(); });
+    overlay.querySelector("#modalGenerate").addEventListener("click", function(){
+      var statusEl=overlay.querySelector("#exportStatus");
+      var btn=overlay.querySelector("#modalGenerate");
+      btn.disabled=true; btn.textContent="Working...";
+      statusEl.innerHTML='<span class="spinner-line">COMPILING REPORT...</span>';
+      setTimeout(function(){
+        var fname="mata-hazard-"+state.week+"-"+state.hazard+".pdf";
+        statusEl.innerHTML='<span style="color:var(--accent)">READY:</span> '+fname;
+        btn.textContent="Done";
+        showToast("Report generated: "+fname);
+        setTimeout(function(){ overlay.remove(); }, 1200);
+      }, 1300);
+    });
+  });
+
+  /* ---------- ingest status screen ---------- */
+  function renderIngest(){
+    var wk=document.getElementById("ingestWeekSelect").value || state.week;
+    var rows=INGEST_STATUS[wk] || INGEST_STATUS["2026-W99"];
+    var body=document.getElementById("ingestTableBody");
+    body.innerHTML="";
+    INGEST_FILES.forEach(function(f,i){
+      var st=rows[i];
+      var label = st==="ok"?"OK":st==="mock"?"MOCK PLACEHOLDER":"MISSING";
+      var detail = st==="ok"?"ingested":st==="mock"?"placeholder written, no source raster":"no file found in data/"+wk.toLowerCase().replace("-","_")+"/";
+      var tr=document.createElement("tr");
+      tr.innerHTML='<td>'+f[0]+'<br><span style="color:var(--text-dim);font-size:10px">'+f[1]+'</span></td>'+
+        '<td class="status-'+st+'"><span class="chip">'+label+'</span></td>'+
+        '<td style="color:var(--text-dim)">'+detail+'</td>';
+      body.appendChild(tr);
+    });
+  }
+  document.getElementById("ingestWeekSelect").addEventListener("change", renderIngest);
+
+  /* ---------- init ---------- */
+  renderLayerList();
+  renderMap();
+  renderIngest();
+})();
+</script>

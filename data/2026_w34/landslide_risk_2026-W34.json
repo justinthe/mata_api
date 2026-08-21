@@ -1,0 +1,16 @@
+{
+  "iso_week": "2026-W34",
+  "generated_at": "2026-08-19T09:30:06.000788+00:00",
+  "grid_cell_count": 2,
+  "count_by_category": {
+    "Safe": 0,
+    "Landslide Unlikely": 0,
+    "Modest Hazard": 0,
+    "Landslides Expected": 1,
+    "Active Landslides": 1
+  },
+  "highest_risk_cell": {
+    "grid_id": "LS-00001",
+    "score_255": 143.0
+  }
+}

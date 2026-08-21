@@ -1,0 +1,285 @@
+{
+  "iso_week": "2026-W30",
+  "generated_at": "2026-08-20T03:37:48.274908+00:00",
+  "count_by_tier": {
+    "LOW": 1475,
+    "MEDIUM": 0,
+    "HIGH": 0
+  },
+  "highest_predicted": {
+    "spatial_unit_id": "GRID-00001",
+    "predicted_next_week_count": 0.0
+  },
+  "by_kecamatan": [
+    {
+      "kecamatan_id": "KEC-01",
+      "kecamatan_name": "Argapura",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-02",
+      "kecamatan_name": "Bantarujeg",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-03",
+      "kecamatan_name": "Cikijing",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-04",
+      "kecamatan_name": "Cingambul",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-05",
+      "kecamatan_name": "Dawuan",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-06",
+      "kecamatan_name": "Jati Tujuh",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-07",
+      "kecamatan_name": "Jatiwangi",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-08",
+      "kecamatan_name": "Kadipaten",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-09",
+      "kecamatan_name": "Kasokandel",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-10",
+      "kecamatan_name": "Kertajati",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-11",
+      "kecamatan_name": "Lemah Sugih",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-12",
+      "kecamatan_name": "Leuwi Munding",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-13",
+      "kecamatan_name": "Ligung",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-14",
+      "kecamatan_name": "Maja",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-15",
+      "kecamatan_name": "Majalengka",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-16",
+      "kecamatan_name": "Malausma",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-17",
+      "kecamatan_name": "Palasah",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-18",
+      "kecamatan_name": "Panyingkiran",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-19",
+      "kecamatan_name": "Pembantu Banjaran",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-20",
+      "kecamatan_name": "Pembantu Cigasong",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-21",
+      "kecamatan_name": "Rajagaluh",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-22",
+      "kecamatan_name": "Sindang",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-23",
+      "kecamatan_name": "Sindangwangi",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-24",
+      "kecamatan_name": "Sukahaji",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-25",
+      "kecamatan_name": "Sumber Jaya",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-26",
+      "kecamatan_name": "Talaga",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-27",
+      "kecamatan_name": "Bagodua",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-28",
+      "kecamatan_name": "Cigugur",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-29",
+      "kecamatan_name": "Cikedung",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-30",
+      "kecamatan_name": "Ciwaringin",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-31",
+      "kecamatan_name": "Darma",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-32",
+      "kecamatan_name": "Dukupuntang",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-33",
+      "kecamatan_name": "Gempol",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-34",
+      "kecamatan_name": "Jatinuggal",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-35",
+      "kecamatan_name": "Kartasemaya",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-36",
+      "kecamatan_name": "Pagerageung",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-37",
+      "kecamatan_name": "Panawangan",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-38",
+      "kecamatan_name": "Pesawahan",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-39",
+      "kecamatan_name": "Sindang Ampar",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-40",
+      "kecamatan_name": "Sukamantri",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-41",
+      "kecamatan_name": "Susukan",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-42",
+      "kecamatan_name": "Terisi",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-43",
+      "kecamatan_name": "Tomo",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-44",
+      "kecamatan_name": "Ujungjaya",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    },
+    {
+      "kecamatan_id": "KEC-45",
+      "kecamatan_name": "Wado",
+      "risk_tier": "LOW",
+      "predicted_next_week_count": 0.0
+    }
+  ]
+}

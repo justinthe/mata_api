@@ -1,0 +1,38 @@
+{
+  "iso_week": "2026-W31",
+  "generated_at": "2026-08-20T05:16:08.497499+00:00",
+  "grid_cell_count": 500,
+  "count_by_category": {
+    "Safe": 0,
+    "Landslide Unlikely": 28,
+    "Modest Hazard": 132,
+    "Landslides Expected": 3,
+    "Active Landslides": 0
+  },
+  "area_by_category_ha": {
+    "Safe": 0.0,
+    "Landslide Unlikely": 27.99999999999767,
+    "Modest Hazard": 131.99999999997675,
+    "Landslides Expected": 3.000000000012224,
+    "Active Landslides": 0.0
+  },
+  "highest_risk_cell": {
+    "grid_id": "LS-00250",
+    "kecamatan_id": "KEC-11",
+    "score_255": 83.0
+  },
+  "by_kecamatan": [
+    {
+      "kecamatan_id": "KEC-11",
+      "kecamatan_name": "Lemah Sugih",
+      "mean_score_255": 18.42685370741483,
+      "highest_category": "Landslides Expected"
+    },
+    {
+      "kecamatan_id": "KEC-36",
+      "kecamatan_name": "Pagerageung",
+      "mean_score_255": 0.0,
+      "highest_category": "masked"
+    }
+  ]
+}

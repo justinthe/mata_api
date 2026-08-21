@@ -1,0 +1,42 @@
+# postgres is NOT managed here: this project shares its Postgres/PostGIS
+# instance with the mata_api_algo project (container mata_api_algo-postgres-1,
+# network mata_api_algo_default, hostname alias "postgres", same mata_hazard
+# DB/user/password as .env). scripts/run-phase-01.sh starts that container if
+# it's down. Do not add a postgres service here.
+services:
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+    networks:
+      - default
+      - mata_api_algo_default
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./generated:/app/generated
+      - ./data:/app/data:ro
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 5s
+      retries: 5
+
+  web:
+    build:
+      context: frontend
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "5173:5173"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:5173"]
+      interval: 5s
+      retries: 5
+
+networks:
+  mata_api_algo_default:
+    external: true
