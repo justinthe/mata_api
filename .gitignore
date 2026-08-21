@@ -4,5 +4,6 @@ __pycache__/
 *.pyc
 .env
 .env.bak
+deploy-credentials.md
 data/20260701/s2_ndvi_ndwi.tif
 *.tif
