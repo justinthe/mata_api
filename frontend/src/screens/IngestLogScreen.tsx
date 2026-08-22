@@ -63,33 +63,35 @@ export default function IngestLogScreen({
             LOADING...
           </p>
         ) : (
-          <table>
-            <thead>
-              <tr>
-                <th>File Type</th>
-                <th>Status</th>
-                <th>Detail</th>
-              </tr>
-            </thead>
-            <tbody>
-              {FILE_TYPE_INFO.filter(([fileType]) => byFileType.has(fileType)).map(([fileType, description]) => {
-                const row = byFileType.get(fileType)!;
-                return (
-                  <tr key={fileType}>
-                    <td>
-                      {fileType}
-                      <br />
-                      <span style={{ color: "var(--text-dim)", fontSize: 10 }}>{description}</span>
-                    </td>
-                    <td className={STATUS_META[row.status]?.cls ?? "status-missing"}>
-                      <span className="chip">{STATUS_META[row.status]?.label ?? row.status.toUpperCase()}</span>
-                    </td>
-                    <td style={{ color: "var(--text-dim)" }}>{row.detail}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          <div className="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>File Type</th>
+                  <th>Status</th>
+                  <th>Detail</th>
+                </tr>
+              </thead>
+              <tbody>
+                {FILE_TYPE_INFO.filter(([fileType]) => byFileType.has(fileType)).map(([fileType, description]) => {
+                  const row = byFileType.get(fileType)!;
+                  return (
+                    <tr key={fileType}>
+                      <td>
+                        {fileType}
+                        <br />
+                        <span style={{ color: "var(--text-dim)", fontSize: 10 }}>{description}</span>
+                      </td>
+                      <td className={STATUS_META[row.status]?.cls ?? "status-missing"}>
+                        <span className="chip">{STATUS_META[row.status]?.label ?? row.status.toUpperCase()}</span>
+                      </td>
+                      <td style={{ color: "var(--text-dim)" }}>{row.detail}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </section>

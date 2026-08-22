@@ -37,7 +37,12 @@ Internal web dashboard showing weekly fire and landslide risk across Majalengka 
   preamble as phase-09, ingests the 3 sample weeks only if `ingest_log` is
   empty, then prints the frontend URL + a manual click-through checklist for
   scroll-zoom, drag-pan, double-click-zoom, the zoom-control buttons, and
-  kecamatan-click-to-zoom).
+  kecamatan-click-to-zoom), or `./scripts/run-phase-13.sh` (same
+  shared-postgres-start + migration + `docker compose up -d --build`
+  preamble as phase-10, ingests the 3 sample weeks only if `ingest_log` is
+  empty, then prints the frontend URL + a manual click-through checklist for
+  the ≤480px phone layout: scroll order, header fit, Ingest Log table
+  scroll, Empty/Error text padding, and unaffected 900px/desktop layouts).
   Frontend: http://localhost:5173.
   Backend health check: http://localhost:8001/health, fire API base:
   http://localhost:8001 — no `/api` prefix, e.g.
@@ -370,6 +375,38 @@ Internal web dashboard showing weekly fire and landslide risk across Majalengka 
     `kecamatan_boundary.geom` is 2D — flattened via `shapely.force_2d`.
   - `rasterio`'s wheel needs `libexpat1`, not present in the `python:3.12-slim`
     base image — installed via `apt-get` in `backend/Dockerfile`.
+- Current phase: Phase 13 complete (`frontend/src/theme.css` — new
+  `@media (max-width:480px)` block ported verbatim from `mockup.html`'s
+  already-approved phone breakpoint: `#dashboard .layout` switches to a
+  flex column ordering `.map-wrap`(1, 42vh) → `aside.right`(2) →
+  `aside:not(.right)`(3) so the map + all 3 alert cards are visible before
+  any scrolling past filters; header/nav/HUD/legend/compass text shrinks;
+  `.popup-card` and `.modal` width-clamp to the viewport; `.empty-body`/
+  `.error-body` get side padding + a text max-width. `IngestLogScreen.tsx`'s
+  `<table>` is now wrapped in `<div className="table-scroll">` so it
+  scrolls horizontally at `min-width:480px` instead of crushing columns —
+  same `.table-scroll`/`table{min-width:480px}` split the mockup uses.
+  Frontend-only phase, no ingest/backend impact — the existing 900px tablet
+  block is untouched.
+  Notable Phase 13 decisions/gotchas:
+  - The mockup's phone-block rules for the empty/error screens are scoped
+    `#empty-week .empty-body{...}`/`#error-state .error-body{...}` (its
+    screens live inside those id'd `<section>`s); the real app's
+    `EmptyWeekScreen.tsx`/`ErrorScreen.tsx` render `.empty-body`/
+    `.error-body` as the section's direct child with no such nesting need,
+    and `theme.css` already declares those two classes bare, unprefixed
+    (lines ~161-174, pre-dating this phase). Ported the mockup's *values*
+    with the *existing* bare selectors, not the mockup's id-prefixed ones —
+    same "port values, fix selectors to match reality" pattern as prior
+    phases' notes below.
+  - Vite 5.4/Vitest 2.1 in this repo does not honor a `?raw` query on `.css`
+    imports (the CSS plugin claims the request by extension before any
+    asset/raw-query handling runs, so `import css from "./theme.css?raw"`
+    silently resolves to an empty string) — `theme.css.test.ts` reads the
+    stylesheet via `node:fs` instead. `@types/node` isn't installed in this
+    frontend, so `frontend/src/node-shim.d.ts` declares just the two
+    ambient types (`readFileSync`, `__dirname`) that test needs, rather
+    than adding the dependency for one file.
 - Phase prompts: see vibe-prompts/00-README.md for run order.
 
 ## Key Context Files

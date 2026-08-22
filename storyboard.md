@@ -1,7 +1,10 @@
 # Storyboard — MATA Hazard Command
 
 > Live reference: open ./mockup.html in a browser.
-> Screenshots of each screen live in ./images/.
+> Screenshots of each screen live in ./images/ (desktop, 1440px) and
+> ./images/mobile/ (phone, 390px — iPhone-class width). Two breakpoints:
+> tablet (≤900px, single-column stack, filters/map/alerts in DOM order) and
+> phone (≤480px, described per-screen below).
 
 ## Screen 1 — Command Map (Dashboard)
 ![Command Map](./images/screen-01-dashboard.png)
@@ -21,6 +24,9 @@
   - Click "Ingest Log" in the header nav → navigates to Screen 2.
 - **Transitions:** → Screen 2 (header nav), → Screen 3 (week dropdown, no-data week), → Screen 4 (link pill / simulate button).
 - **States:** default (populated week, e.g. 2026-W34 with the Fire Risk – Kecamatan layer showing its disabled/no-raster state since that layer is mock-only for W34); a layer-missing state per layer (sidebar row disabled, map simply omits that layer's contribution); popup-open state (transient, dismissed by ✕ or a new cell click).
+- **Mobile (≤480px):**
+  ![Command Map — mobile](./images/mobile/screen-01-dashboard-mobile.png)
+  Single scrolling column, reordered by priority so the two things an operator needs at a glance — the map and the alert counts — come before the filter controls: map (42vh) → Alert Summary cards + Export/System buttons → Week/Hazard/Layers sidebar. All 3 alert cards remain fully visible directly under the map without scrolling. Header subtitle ("// MAJALENGKA SECTOR") and the clock/link-status block are dropped to fit the brand + nav tabs on one line; nav tab labels and legend/HUD/compass text shrink. Grid-cell tap targets and the click-popup are unchanged (popup width clamps to viewport so it can't overflow).
 
 ## Screen 2 — Ingest Log
 ![Ingest Log](./images/screen-02-ingest-status.png)
@@ -29,6 +35,9 @@
 - **User actions:** change week dropdown → reloads the table for that week (mirrors the real gaps in `data/`: W34 has kecamatan-tif + landslide-risk-tif as MOCK and all landslide CSVs MISSING; W31 is fully OK; W30 is missing the fire grid tif and two fire CSVs; W99 is entirely MISSING).
 - **Transitions:** → Screen 1 via the "Command Map" header tab.
 - **States:** only a populated table state — status per row is data-driven (OK/MOCK/MISSING), so there's no separate empty state for this screen itself (an all-MISSING week, e.g. W99, is still a fully rendered table, just all-MISSING rows).
+- **Mobile (≤480px):**
+  ![Ingest Log — mobile](./images/mobile/screen-02-ingest-status-mobile.png)
+  Table doesn't reflow into cards — it keeps its 3 real columns at a fixed `min-width:480px` inside a horizontally-scrollable wrapper, so File Type/Status stay legible and Detail is one swipe away, instead of every column being crushed to fit 390px.
 
 ## Screen 3 — Empty Week
 ![Empty Week](./images/screen-03-empty-week.png)
@@ -37,6 +46,9 @@
 - **User actions:** click "Back to Command Map" → returns to Screen 1 (map re-renders with the previously selected populated week's dropdown value still showing the empty week — real app should reset the selector to a valid week on return).
 - **Transitions:** → Screen 1.
 - **States:** single state — this screen only ever shows the no-data message.
+- **Mobile (≤480px):**
+  ![Empty Week — mobile](./images/mobile/screen-03-empty-week-mobile.png)
+  Content already centers in a flex column at any width; phone breakpoint just adds side padding and caps the explanation paragraph's width so it wraps cleanly instead of touching the screen edges.
 
 ## Screen 4 — Connection Error
 ![Connection Error](./images/screen-04-error-state.png)
@@ -45,6 +57,9 @@
 - **User actions:** click "Retry Connection" → shows a "Connection restored" toast and returns to Screen 1.
 - **Transitions:** → Screen 1 (retry).
 - **States:** single state in the mockup; the real app additionally needs a *partial*-failure variant (e.g. `/weeks` succeeds but `/fire/summary` fails) — out of scope for this storyboard, flag for implementation.
+- **Mobile (≤480px):**
+  ![Connection Error — mobile](./images/mobile/screen-04-error-state-mobile.png)
+  Same treatment as Screen 3 — side padding added, trace line width-capped so it wraps instead of overflowing.
 
 ## Journey Summary
 
@@ -57,3 +72,5 @@
 7. Operator (as Budi) switches to Screen 2 via the header "Ingest Log" tab to confirm which files were live vs. placeholder for the week just reported on, then returns to Screen 1.
 8. If the operator instead picks an uningested week (2026-W99) from the dropdown on Screen 1 → Screen 3 (Empty Week) explains why and offers a way back.
 9. If the API becomes unreachable at any point → Screen 4 (Connection Error) replaces the current view; "Retry Connection" returns to Screen 1 once the link is back.
+
+Journey is identical on phone — same steps, same elements, no feature dropped. Only the layout reflows (see each screen's "Mobile" note above): Screen 1's map+alerts move above its filters, Screen 2's table scrolls horizontally instead of shrinking, Screens 3-4 gain side padding.

@@ -40,3 +40,39 @@ renumbered the always-last observability/security-audit phases:
 `scripts/run-phase-NN.sh` names updated to match; neither had been
 executed yet, so the rename was safe). `00-README.md`'s phase table
 updated to match.
+
+## Post-pipeline addition — 2026-08-22
+User asked for a mobile-responsive redesign ("fits on a mobile phone
+screen ... user can see everything all important information"). Chose
+**full revise** route (not the Phase-10-style S5-only fast-track) since
+this is a visual change — mockup needed to show the target phone layout
+before a build phase is written.
+- S3 `mockup.html` — revised: added `@media (max-width:480px)` block.
+  Dashboard reorders to map → alert summary/buttons → filters (CSS
+  `order`, flex column) so the map + all 3 alert counts are visible
+  before scrolling past filter chrome. Ingest Log table wrapped in a
+  `.table-scroll` div (`overflow-x:auto`, table `min-width:480px`) so
+  columns scroll instead of crushing. Export modal width clamped to
+  `calc(100vw - 32px)`. Approved 2026-08-22.
+- `images/` (desktop, 1440px) re-rendered via the bundled
+  `screenshot-mockup.mjs` — byte-identical to before (media query is
+  phone-only, doesn't touch the 1440px capture).
+- `images/mobile/` (new, 390×844) added via a one-off local script
+  (`screenshot-mockup-mobile.mjs`, not part of the bundled skill,
+  deleted after use — re-create by copying `screenshot-mockup.mjs` and
+  swapping the viewport + output path if phone shots are needed again).
+  Confirms the reorder and table-scroll actually render correctly.
+  Root `package.json`/`package-lock.json`/`node_modules` that `npm i
+  playwright` created as a side effect were deleted after — this repo
+  has no root Node project, only `frontend/`.
+- S4 `storyboard.md` — revised: added a "Mobile (≤480px)" subsection
+  per screen embedding the matching `images/mobile/*.png` and one-line
+  reflow description; noted in the Journey Summary that the phone
+  journey is identical, layout-only.
+- S5: added `vibe-prompts/phase-13-mobile-responsive.md` +
+  `00-README.md` phase table row — same "extend, don't touch built
+  phases" pattern as Phase 10, not a full vibe-prompts regeneration.
+  Ports the mockup's phone breakpoint into `frontend/src/theme.css` +
+  `IngestLogScreen.tsx`'s table wrapper. Not yet executed — run via
+  `Read vibe-prompts/phase-13-mobile-responsive.md and execute it` in a
+  fresh Claude Code session once ready to build.

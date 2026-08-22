@@ -19,6 +19,14 @@ describe("Ingest Log screen", () => {
     expect(screen.getAllByText("OK").length).toBeGreaterThan(0);
   });
 
+  it("wraps the table in a horizontally-scrollable container", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<App />);
+    await user.click(await screen.findByText("Ingest Log"));
+    await screen.findByText("MOCK PLACEHOLDER");
+    expect(container.querySelector(".table-scroll table")).toBeInTheDocument();
+  });
+
   it("switching weeks re-fetches ingest status for the new week", async () => {
     const fetchMock = installMockFetch();
     const user = userEvent.setup();
